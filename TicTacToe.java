@@ -36,7 +36,7 @@ public class TicTacToe {
 
     static void checkInputCoordinates (String[][] matrix, String input) {
         String[] coordinates = input.split(" ");
-        if (coordinates.length > 1 && coordinates[0].matches("\\d+") && coordinates[1].matches("\\d+")) {
+        if (coordinates.length == 2 && coordinates[0].matches("\\d+") && coordinates[1].matches("\\d+")) {
             int x = Integer.parseInt(coordinates[0]);
             int y = Integer.parseInt(coordinates[1]);
             if (x < 1 || y < 1 || x > 3 || y > 3) {
@@ -86,55 +86,34 @@ public class TicTacToe {
 
     static boolean findWinner(String[][] matrix, String player) {
         boolean wins = false;
-        int count;
-        //check rows
+        int[] rowCounter = new int[n];
+        int[] columnCounter = new int[n];
+        int mainCounter = 0;
+        int sideCounter = 0;
+
         for (int i = 0 ; i < n; i++) {
-            count = 0;
             for (int j = 0; j < n; j++) {
                 if (player.equals(matrix[i][j])) {
-                    count++;
+                    rowCounter[i]++;
+                    columnCounter[j]++;
+                    if (i == j) {
+                        mainCounter++;
+                    }
+                    if (i + j ==  n - 1) {
+                        sideCounter++;
+                    }
+                }
+                if (columnCounter[j] == n) {
+                    wins = true;
+                    break;
                 }
             }
-            if (count == n) {
+            if (rowCounter[i] == n) {
                 wins = true;
                 break;
             }
         }
-        //check columns
-        for (int j = 0 ; j < n; j++) {
-            count = 0;
-            for (int i = 0; i < n; i++) {
-                if (player.equals(matrix[i][j])) {
-                    count++;
-                }
-            }
-            if (count == n) {
-                wins = true;
-                break;
-            }
-        }
-        //check main diagonal
-        count = 0;
-        for (int i = 0 ; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if ( i == j && player.equals(matrix[i][j])) {
-                    count++;
-                }
-            }
-        }
-        if (count == n) {
-            wins = true;
-        }
-        //check second diagonal
-        count = 0;
-        for (int i = 0 ; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i + j ==  n - 1 && player.equals(matrix[i][j])) {
-                    count++;
-                }
-            }
-        }
-        if (count == n) {
+        if (mainCounter == n || sideCounter == n) {
             wins = true;
         }
         return wins;
