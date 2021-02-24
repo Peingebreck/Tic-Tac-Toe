@@ -19,7 +19,6 @@ public class TicTacToe {
                 break;
             }
         }
-
     }
 
     static void printField(String[][] matrix) {
